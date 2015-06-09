@@ -1,0 +1,25 @@
+{
+  "name": "processing-pipe",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FlorianLoch/node-processing-pipe.git"
+  },
+  "author": "",
+  "license": "Closed source",
+  "bugs": {
+    "url": "https://github.com/FlorianLoch/node-processing-pipe/issues"
+  },
+  "homepage": "https://github.com/FlorianLoch/node-processing-pipe#readme",
+  "devDependencies": {
+    "chai": "^3.0.0"
+  }
+}

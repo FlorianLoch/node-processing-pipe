@@ -1,5 +1,7 @@
 // A piece has to be a function expecting and invoking-when-done a callback keeping the chain going
 
+module.exports = Pipe;
+
 function Pipe () {
   this._pieces = [];
   this._locked = false;
@@ -26,17 +28,18 @@ Pipe.prototype.flood = function (data) {
     piecesPassed: -1
   };
   this._locked = true;
-  floodRec.call(this, 0);
+  arguments.unshift(0);
+  floodRec.apply(this, arguments);
 
   function floodRec (index) {
     ctx.piecesPassed++;
+    var args = arguments.shift(); //Remove the first parameter (index)
 
     if (index >= this._pieces.length) {
-      this.onFinished(ctx);
+      this.onFinished(ctx, args);
     }
 
     var piece = this._pieces[index];
-    var args = arguments.shift(); //Remove the first parameter (index)
     args.unshift(floodRec.bind(this, ++index));
     piece.apply(ctx, args);
   }
