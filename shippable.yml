@@ -14,6 +14,7 @@ env:
 # Create directories for test and coverage reports
 before_script:
   - npm install -g mocha
+  - npm install -g istanbul
   - npm install
 
 # Running the tests with grunt
