@@ -47,7 +47,7 @@ Pipe.prototype.flood = function (data) {
 
     if (index >= this._pieces.length) {
       args.unshift(ctx);
-      this.onFinished.apply(this, args);
+      this.onDone.apply(this, args);
       return;
     }
 
@@ -59,10 +59,14 @@ Pipe.prototype.flood = function (data) {
 
 //Might receive more than just one data parameter - this depends on the pieces-functions used
 //When overwriting this function attention should be payed to "arguments" variable
-Pipe.prototype.onFinished = function (cxt, data) {
+Pipe.prototype.onDone = function (cxt, data) {
+  this.onEnded.apply(this, arguments);
+};
+
+Pipe.prototype.onEnded = function (cxt, data) {
   console.log("Done!");
 };
 
 Pipe.prototype.onAborted = function (cxt, data) {
-  console.log("Called!");
+  this.onEnded.apply(this, arguments);
 };
