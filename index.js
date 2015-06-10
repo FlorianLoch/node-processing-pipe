@@ -24,19 +24,31 @@ Pipe.prototype.placeLast = function (piece) {
 };
 
 Pipe.prototype.flood = function (data) {
+  var self = this;
   var ctx = {
-    piecesPassed: -1
+    piecesPassed: -1,
+    abort: function () {
+      var args = Array.prototype.slice.call(arguments);
+      args.unshift(ctx);
+      self.onAborted.apply(self, args);
+    }
   };
+
   this._locked = true;
-  arguments.unshift(0);
-  floodRec.apply(this, arguments);
+
+  var args = Array.prototype.slice.call(arguments);
+  args.unshift(0);
+  floodRec.apply(this, args);
 
   function floodRec (index) {
     ctx.piecesPassed++;
-    var args = arguments.shift(); //Remove the first parameter (index)
+    var args = Array.prototype.slice.call(arguments);
+    args.shift(); //Remove the first parameter (index)
 
     if (index >= this._pieces.length) {
-      this.onFinished(ctx, args);
+      args.unshift(ctx);
+      this.onFinished.apply(this, args);
+      return;
     }
 
     var piece = this._pieces[index];
@@ -45,6 +57,12 @@ Pipe.prototype.flood = function (data) {
   }
 };
 
-Pipe.prototype.onFinished = function (cxt) {
+//Might receive more than just one data parameter - this depends on the pieces-functions used
+//When overwriting this function attention should be payed to "arguments" variable
+Pipe.prototype.onFinished = function (cxt, data) {
   console.log("Done!");
+};
+
+Pipe.prototype.onAborted = function (cxt, data) {
+  console.log("Called!");
 };

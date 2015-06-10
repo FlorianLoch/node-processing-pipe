@@ -42,6 +42,7 @@ describe("processing-pipe", function () {
         next(data);
       });
       instance.place(function (next, data) {
+        expect(data.myValue).to.equal("Hello World");
         data.myValue += "!";
         next(data);
       });
@@ -51,5 +52,49 @@ describe("processing-pipe", function () {
         expect(data.myValue).to.equal("Hello World!");
         done();
       };
+
+      instance.flood({
+        myValue: "Hello"
+      });
+    });
+
+    it("shall be possible to abort execution of pipe", function (done) {
+      instance.place(function (next, data1, data2) {
+        data1.a = 3;
+        data2.a = 5;
+        next(data1, data2);
+      });
+
+      instance.place(function (next, data1, data2) {
+        data1.b = data1.a + data2.a;
+        this.abort(data1, data2);
+      });
+
+      instance.onAborted = function (cxt, data1, data2) {
+        expect(data1.b).to.equal(8);
+        expect(data2.a).to.equal(5);
+        done();
+      };
+
+      instance.flood({}, {});
+    });
+
+    it("shall of course be possible to use ctx for all data handover - custom parameter are not needed", function (done) {
+      instance.place(function (next) {
+        this.value = 1;
+        next();
+      });
+
+      instance.place(function (next) {
+        this.value++;
+        next();
+      });
+
+      instance.onFinished = function (ctx) {
+        expect(ctx.value).to.equal(2);
+        done();
+      };
+
+      instance.flood();
     });
 });
