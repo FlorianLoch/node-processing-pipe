@@ -7,20 +7,19 @@ node_js:
 
 build_image: shippableimages/ubuntu1204_nodejs
 
-# The path for Xunit to output test reports
 env:
-  - XUNIT_FILE=shippable/testresults/result.xml
+  - secure: Y6K9k36JxeBv95PJmHlONuqSox1cgLggFxdNI8ikFvvQKc4J+3QPxD2jT7t2lxZ0uvyEAL1ZrCIG/vJhD7i3LAFava2qa3IC3IKJMeyvcllh7cv/wfd/d9zwalBVh/MUx4su5BB9YguPh1xdhy97bXaKdPToK3CuffoukURiNjIOzET2p+AXiFoAlDgqhgzCuqGfLkw/HiiADlCMPrIryfiSNZUWBXhubJRr4qf2QBVsCbmJabVOj3eEswJFG9xcwTDMeWD1qI1Z0c65h12gaLxllZkbZb6BBeaymuZBPfrQsklSgH3ZwBAE96vvvEFM9+RZPxPLcOYUfkhbgAyosA==
 
-# Create directories for test and coverage reports
 before_script:
   - npm install -g mocha
   - npm install -g istanbul
+  - npm install -g codeclimate-test-reporter
   - npm install
 
-# Running the tests with grunt
 script:
   - npm test
 
-# Tell istanbul to generate a coverage reporlt
+# Tell istanbul to generate a coverage report
 after_script:
-  - ./node_modules/.bin/istanbul report cobertura --dir  shippable/codecoverage/
+  - istanbul report cobertura -- dir shippable/codecoverage/
+  - codeclimate < ./coverage/lcov.info

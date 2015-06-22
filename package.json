@@ -1,7 +1,7 @@
 {
   "name": "processing-pipe",
   "version": "0.0.1",
-  "description": "",
+  "description": "A simple module for setting up and executing an asynchronous processing pipe. Great for middleware-like use-cases.",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -13,8 +13,8 @@
     "type": "git",
     "url": "git+https://github.com/FlorianLoch/node-processing-pipe.git"
   },
-  "author": "",
-  "license": "Closed source",
+  "author": "Florian Loch",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/FlorianLoch/node-processing-pipe/issues"
   },
