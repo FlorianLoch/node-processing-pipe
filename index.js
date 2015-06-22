@@ -1,4 +1,5 @@
 // A piece has to be a function expecting and invoking-when-done a callback keeping the chain going
+"use strict";
 
 module.exports = Pipe;
 

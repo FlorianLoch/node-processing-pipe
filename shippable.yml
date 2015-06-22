@@ -8,7 +8,7 @@ node_js:
 build_image: shippableimages/ubuntu1204_nodejs
 
 env:
-  - secure: g3Oh/+cOI/lqrCe/3ZjZL0PAPv3n8BeNjqDV5uwKnvfK93sOwSiVmTwLrLNrLGszcj9EDLrG4jdTq1i3hJWToOwc1MXxAnU5m3K/HHugBvG3dOjUTG2u9AwR+LnA5PjH+ggwsldcHdNvE+55eAZ4zgC5VSqApBxs+Io1aeAQGIq0hW4ubghwYrqqD8vMSy+Sj8/HCIQAIcbsu6QKp1CrMwjbQrKOn5w5Z5KHRiMLPDAFGiAxKsXynqhRBaAJ8DFg7S/4ksRrBF4nhmbnT5l/NG10dWF+m8iaYzfWFDvmlzhT7G2M6BC93rJFFuBy4QjwdE21hfQdEYIYyJ6efvyFiQ==
+  - secure: DU9ps7hz4euiDNFqo3jE4M4sFs1Pon29rwjc4na2R4zCnahS4Ig7+VySLVBw65mgc5NK1AVcCXgwFI4YNQz5Dgr85s7/IHW39D3qMfhTS20xMqtSBcOz+FExIOtz5yA/K1I3ovEzY0+DllAKsEnuUOuCMAKF0+Y0yaB4WorhzBNL8Zeq+pOIgwSwUhm7GBaRpWiyBFbxSF4zghfJtJQ/LzRON1LBXYOuwXsJZFQvDX7HJw0m3zULiTjTjd6SJ+gxyQURfiikt2OHNDU0WWun1DQuxYzYvfrj1OHP8QXy3S7QxJ3fBidDSlaUc3X0tUymmkfcqTPU3euN6a8i3dfwog==
 
 before_script:
   - npm install -g mocha
@@ -21,5 +21,5 @@ script:
 
 # Tell istanbul to generate a coverage report
 after_script:
-  - istanbul report cobertura -- dir shippable/codecoverage/
+  - istanbul report cobertura --dir shippable/codecoverage/
   - codeclimate < ./coverage/lcov.info
