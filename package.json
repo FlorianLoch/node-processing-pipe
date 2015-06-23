@@ -1,6 +1,6 @@
 {
   "name": "processing-pipe",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A simple module for setting up and executing an asynchronous processing pipe. Great for middleware-like use-cases.",
   "main": "index.js",
   "directories": {
