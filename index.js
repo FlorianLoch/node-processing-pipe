@@ -30,8 +30,10 @@ Pipe.prototype.flood = function (data) {
     piecesPassed: -1,
     abort: function () {
       var args = Array.prototype.slice.call(arguments);
-      args.unshift(ctx);
-      self.onAborted.apply(self, args);
+      args.unshift(ctx); //will be actual parameter "err"
+      args.unshift(null);
+      ctx.aborted = true;
+      self.onDone.apply(self, args);
     }
   };
 
@@ -46,8 +48,19 @@ Pipe.prototype.flood = function (data) {
     var args = Array.prototype.slice.call(arguments);
     args.shift(); //Remove the first parameter (index)
 
+    if (arguments[1] instanceof Error) {
+        args.shift(); //Remove err object
+        args.unshift(ctx);
+        args.unshift(arguments[1]);
+        ctx.aborted = true;
+        self.onDone.apply(self, args);
+        return;
+    }
+
     if (index >= this._pieces.length) {
       args.unshift(ctx);
+      args.unshift(null);
+      ctx.aborted = false;
       this.onDone.apply(this, args);
       return;
     }
@@ -59,15 +72,9 @@ Pipe.prototype.flood = function (data) {
 };
 
 //Might receive more than just one data parameter - this depends on the pieces-functions used
-//When overwriting this function attention should be payed to "arguments" variable
-Pipe.prototype.onDone = function (cxt, data) {
-  this.onEnded.apply(this, arguments);
-};
-
-Pipe.prototype.onEnded = function (cxt, data) {
-  console.log("Done!");
-};
-
-Pipe.prototype.onAborted = function (cxt, data) {
-  this.onEnded.apply(this, arguments);
+//When overwriting this function attention should be payed to "arguments" variable.
+//"This" context is set to the pipe instance. When aborted ctx contains a property "aborted" set to true. In case of aborting due to
+//an error "aborted" is also set true.
+Pipe.prototype.onDone = function (err, cxt, data) {
+  //arguments
 };

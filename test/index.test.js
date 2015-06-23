@@ -27,8 +27,10 @@ describe("processing-pipe", function () {
         next();
       });
 
-      instance.onDone = function (cxt) {
-        expect(cxt.piecesPassed).to.equal(3);
+      instance.onDone = function (err, ctx) {
+        expect(ctx.piecesPassed).to.equal(3);
+        expect(ctx.aborted).to.be.false;
+        expect(err).to.be.null;
         done();
       };
 
@@ -70,16 +72,13 @@ describe("processing-pipe", function () {
         this.abort(data1, data2);
       });
 
-      var origOnAborted = instance.onAborted;
-      instance.onAborted = function (cxt, data1, data2) {
-        origOnAborted.apply(instance, arguments);
-      };
-
-      instance.onEnded = function (cxt, data1, data2) {
+      instance.onDone = function (err, ctx, data1, data2) {
+        expect(err).to.be.null;
+        expect(ctx.aborted).to.be.true;
         expect(data1.b).to.equal(8);
         expect(data2.a).to.equal(5);
         done();
-      }
+      };
 
       instance.flood({}, {});
     });
@@ -95,7 +94,9 @@ describe("processing-pipe", function () {
         next();
       });
 
-      instance.onEnded = function (ctx) {
+      instance.onDone = function (err, ctx) {
+        expect(ctx.aborted).to.be.false;
+        expect(err).to.be.null;
         expect(ctx.value).to.equal(2);
         done();
       };
@@ -124,5 +125,24 @@ describe("processing-pipe", function () {
 
       expect(errorCaught).to.be.true;
       expect(instance._pieces.length).to.equal(1);
+    });
+
+    it("shall be possible to stop execution (abort) by handing over an instance of Error as first parameter to next()", function (done) {
+      instance.place(function (next) {
+        next();
+      });
+
+      instance.place(function (next) {
+        next(new Error("foobar!"));
+      });
+
+      instance.onDone = function (err, ctx) {
+        expect(ctx.aborted).to.be.true;
+        expect(err.message).to.be.equal("foobar!");
+        expect(ctx.piecesPassed).to.equal(2);
+        done();
+      };
+
+      instance.flood();
     });
 });
