@@ -145,4 +145,22 @@ describe("processing-pipe", function () {
 
       instance.flood();
     });
+
+    it("shall be possible to compare to functions", function () {
+      var func1 = function () {};
+      var func2 = function () {};
+
+      expect(func1 == func1).to.be.true;
+      expect(func1 == func2).to.be.false;
+    });
+
+    it("shall be possible to set onDone via optional, second parameter of flood(). The algorithm shall also work for empty pipes", function (done) {
+      var handler = function (err, ctx, data) {
+        expect(data).to.equal("helloData");
+        expect(instance.onDone == handler).to.be.true;
+        expect(ctx.piecesPassed).to.equal(0);
+        done();
+      };
+      instance.flood("helloData", handler);
+    });
 });

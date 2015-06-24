@@ -24,7 +24,11 @@ Pipe.prototype.placeLast = function (piece) {
   this.place(piece);
 };
 
-Pipe.prototype.flood = function (data) {
+Pipe.prototype.flood = function (data, onDone) {
+  if (typeof onDone == "function") {
+    this.onDone = onDone;
+  }
+
   var self = this;
   var ctx = {
     piecesPassed: -1,
@@ -49,12 +53,12 @@ Pipe.prototype.flood = function (data) {
     args.shift(); //Remove the first parameter (index)
 
     if (arguments[1] instanceof Error) {
-        args.shift(); //Remove err object
-        args.unshift(ctx);
-        args.unshift(arguments[1]);
-        ctx.aborted = true;
-        self.onDone.apply(self, args);
-        return;
+      args.shift(); //Remove err object
+      args.unshift(ctx);
+      args.unshift(arguments[1]);
+      ctx.aborted = true;
+      this.onDone.apply(this, args);
+      return;
     }
 
     if (index >= this._pieces.length) {
