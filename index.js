@@ -25,9 +25,10 @@ Pipe.prototype.placeLast = function (piece) {
 };
 
 Pipe.prototype.flood = function (data, onDone) {
-  if (typeof onDone == "function") {
+  if (typeof onDone === "function") {
     this.onDone = onDone;
   }
+  this.onDone = this.onDone || function () {};
 
   var self = this;
   var ctx = {
@@ -79,6 +80,7 @@ Pipe.prototype.flood = function (data, onDone) {
 //When overwriting this function attention should be payed to "arguments" variable.
 //"This" context is set to the pipe instance. When aborted ctx contains a property "aborted" set to true. In case of aborting due to
 //an error "aborted" is also set true.
-Pipe.prototype.onDone = function (err, cxt, data) {
-  //arguments
-};
+
+//Pipe.prototype.onDone = function (err, cxt, data) {
+//
+//};
