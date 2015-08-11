@@ -18,7 +18,7 @@ function chainable(next, data, as, much, further, variables, as, you, like) {
   next(hand, over, all, variables, you, need);
 }  
 ```
-Actually just ```next``` is needed - it will be given the generated %Bindeglied% function that will do the work of correct invocation of the next chain item for you. It has to be once in your code or the chain will break. It shouldn't be called more than once.
+Actually just ```next``` is needed - it will be given the generated "connecting piece"-function that will do the work of correct invocation of the next chain item for you. It has to be once in your code or the chain will break. It shouldn't be called more than once.
 ```this``` is set to a context variable provided by the library to enable access to methods like ```abort()```. If you need ```this``` to point to instance a method is bound to you might wrap the function with another function. Using ```bind()``` will also work.
 If the first parameter given to it is an instance of ```Error``` processing will be aborted the same way ```this.abort()``` (further down this document) would do it.
 
